@@ -1,0 +1,53 @@
+@font-face {
+    src: url('../fonts/PT-Astra-Sans_Bold-Italic.ttf');
+    font-family: "PT-Astra-Sans_Bold-Italicr";
+}
+
+.foot {
+    text-align: center;
+    background-color: #EBE6D6;
+    margin: 0;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+p{
+    margin: 5px;
+    font-family: "PT-Astra-Sans_Bold-Italicr";
+    color: #163E6C;
+}
+
+.btn-primary{
+    font-weight: bold;
+    font-size: large;
+    margin-right: 10px;
+    padding: 2px;
+    border-radius: 5px;
+    color: #163E6C;
+    font-family: "PT-Astra-Sans_Bold-Italicr";
+}
+
+.last_line{
+    display: flex;
+    align-items: center;
+    align-content: space-between;
+    justify-content: center;
+}
+
+.Silant{
+    position: absolute;
+    right: 0;
+}
+
+.textLogo{
+    width: 150px;
+    height: 50px;
+    color: #163E6C;
+}
+
+.logo{
+    width: 75px;
+    height: 50px;
+    color: #163E6C;
+    margin-left: 10px;
+}
