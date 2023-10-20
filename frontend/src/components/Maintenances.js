@@ -9,13 +9,14 @@ import { Link, useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "../styles/Maintenances.css"
 
-
 function Maintenances(props) {
     const [response, setResponse] = React.useState([]);
     let [requested, maintenanceReq] = React.useState(false);
     let[nothing, setNothing] = React.useState(false);
     const[click, setClick] = React.useState(false);
     const navigate = useNavigate();
+    const [sortColumn, setSortColumn] = React.useState(null);
+    const [sortDirection, setSortDirection] = React.useState('asc');
 
 
     const LINK = `http://127.0.0.1:8000/api/maintenances/?type_of_maintenance=${props.valueToM}&machine=${props.valueM}&service_company=${props.valueSC}`;
@@ -82,6 +83,37 @@ function Maintenances(props) {
         navigate(`/maintenances/add`);
     };
 
+    const handleSort = (column) => {
+        if (sortColumn === column) {
+            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+        } else {
+            setSortColumn(column);
+            setSortDirection('asc');
+        }
+    };
+
+    const sortedMaintenances = maintenances && maintenances.length ? maintenances.sort((a, b) => {
+        if (sortColumn === 'type_of_maintenance') {
+            return sortDirection === 'asc' ? a.type_of_maintenance.localeCompare(b.type_of_maintenance) : b.type_of_maintenance.localeCompare(a.type_of_maintenance);
+        }
+        else if (sortColumn === 'date_of_maintenance') {
+            return sortDirection === 'asc' ? a.date_of_maintenance.localeCompare(b.date_of_maintenance) : b.date_of_maintenance.localeCompare(a.date_of_maintenance);
+        } else if (sortColumn === 'operating_time') {
+            return sortDirection === 'asc' ? a.operating_time - b.operating_time : b.operating_time - a.operating_time;
+        } else if (sortColumn === 'order_number') {
+            return sortDirection === 'asc' ? a.order_number.localeCompare(b.order_number) : b.order_number.localeCompare(a.order_number);
+        } else if (sortColumn === 'data_of_order') {
+            return sortDirection === 'asc' ? a.data_of_order.localeCompare(b.data_of_order) : b.data_of_order.localeCompare(a.data_of_order);
+        } else if (sortColumn === 'organization') {
+            return sortDirection === 'asc' ? a.organization.localeCompare(b.organization) : b.organization.localeCompare(a.organization);
+        } else if (sortColumn === 'machine') {
+            return sortDirection === 'asc' ? a.machine.localeCompare(b.machine) : b.machine.localeCompare(a.machine);
+        } else if (sortColumn === 'service_company') {
+            return sortDirection === 'asc' ? a.service_company.localeCompare(b.service_company) : b.service_company.localeCompare(a.service_company);
+        }
+        return 0;
+    }) : [];
+
 
     if(props.role === 'Менеджер'){
         return (
@@ -97,14 +129,38 @@ function Maintenances(props) {
                             <Table variant='' striped bordered hover className='maintenances'>
                                 <thead>
                                     <tr>
-                                        <th>Зав. № машины</th>
-                                        <th>Вид ТО</th>
-                                        <th>Дата проведения ТО</th>
-                                        <th>Наработка, м/час</th>
-                                        <th>№ заказ-наряда</th>
-                                        <th>Дата заказ-наряда</th>
-                                        <th>Организация, проводившая ТО</th>
-                                        <th>Сервисная компания</th>
+                                        <th onClick={() => handleSort('machine')}>
+                                            Зав. № машины
+                                            {sortColumn === 'machine' && (sortDirection === 'asc' ? ' ▲' : ' ▼')}
+                                        </th>
+                                        <th onClick={() => handleSort('type_of_maintenance')}>
+                                            Вид ТО
+                                            {sortColumn === 'type_of_maintenance' && (sortDirection === 'asc' ? ' ▲' : ' ▼')}
+                                        </th>
+                                        <th onClick={() => handleSort('date_of_maintenance')}>
+                                            Дата проведения ТО
+                                            {sortColumn === 'date_of_maintenance' && (sortDirection === 'asc' ? ' ▲' : ' ▼')}
+                                        </th>
+                                        <th onClick={() => handleSort('operating_time')}>
+                                            Наработка, м/час
+                                            {sortColumn === 'operating_time' && (sortDirection === 'asc' ? ' ▲' : ' ▼')}
+                                         </th>
+                                        <th onClick={() => handleSort('order_number')}>
+                                            № заказ-наряда
+                                            {sortColumn === 'order_number' && (sortDirection === 'asc' ? ' ▲' : ' ▼')}
+                                        </th>
+                                        <th onClick={() => handleSort('data_of_order')}>
+                                            Дата заказ-наряда
+                                            {sortColumn === 'data_of_order' && (sortDirection === 'asc' ? ' ▲' : ' ▼')}
+                                         </th>
+                                        <th onClick={() => handleSort('organization')}>
+                                            Организация, проводившая ТО
+                                            {sortColumn === 'organization' && (sortDirection === 'asc' ? ' ▲' : ' ▼')}
+                                        </th>
+                                        <th onClick={() => handleSort('service_company')}>
+                                            Сервисная компания
+                                            {sortColumn === 'service_company' && (sortDirection === 'asc' ? ' ▲' : ' ▼')}
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
